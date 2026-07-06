@@ -1,13 +1,87 @@
 {
-    "atomType": "Molecule",
-    "x": 0,
-    "y": 0,
-    "uniqueID": "id-1",
-    "name": "TrimWires",
-    "topLevel": true,
-    "allAtoms": [],
-    "allConnectors": [],
-    "unitsKey": "Unitless",
-    "fileTypeVersion": 1,
-    "filetypeVersion": 1
+  "atomType": "Molecule",
+  "x": 0,
+  "y": 0,
+  "uniqueID": "id-1",
+  "name": "TrimWires",
+  "ioValues": [
+    {
+      "name": "Wires",
+      "ioValue": "__GEOMETRY_INPUT__"
+    },
+    {
+      "name": "Within",
+      "ioValue": "__GEOMETRY_INPUT__"
+    }
+  ],
+  "topLevel": true,
+  "allAtoms": [
+    {
+      "atomType": "Output",
+      "x": 0.98,
+      "y": 0.5,
+      "uniqueID": "id-2",
+      "ioValues": [
+        {
+          "name": "number or geometry",
+          "ioValue": "__GEOMETRY_INPUT__"
+        }
+      ]
+    },
+    {
+      "atomType": "Code",
+      "x": 0.583224115334207,
+      "y": 0.6333789329685362,
+      "uniqueID": "id-4",
+      "ioValues": [
+        {
+          "name": "wires",
+          "ioValue": "__GEOMETRY_INPUT__"
+        },
+        {
+          "name": "within",
+          "ioValue": "__GEOMETRY_INPUT__"
+        }
+      ],
+      "interpreterVersion": 1,
+      "code": "function run(wires: Assembly, within: Assembly) {\n  if (!within.isLeaf()) {\n    throw Error(\"within must be  leaf for now\")\n  }\n  const result = []\n  wires.onLeafs((leaf) => {\n    const foo = (within.geometry as replicad.Solid).intersect(leaf.geometry as replicad.Wire)\n    result.push(foo)\n    return leaf;\n  })\n  console.log(result)\n  return result.map((w) => { return replicad.assembleWire(w.edges) })\n}",
+      "compiledCode": "\"use strict\";\nfunction run(wires, within) {\n    if (!within.isLeaf()) {\n        throw Error(\"within must be  leaf for now\");\n    }\n    const result = [];\n    wires.onLeafs((leaf) => {\n        const foo = within.geometry.intersect(leaf.geometry);\n        result.push(foo);\n        return leaf;\n    });\n    console.log(result);\n    return result.map((w) => { return replicad.assembleWire(w.edges); });\n}\n"
+    },
+    {
+      "atomType": "Input",
+      "x": 0.025384615384615384,
+      "y": 0.3967168262653899,
+      "uniqueID": "id-15",
+      "name": "Wires",
+      "type": "geometry"
+    },
+    {
+      "atomType": "Input",
+      "x": 0.025384615384615384,
+      "y": 0.5526675786593707,
+      "uniqueID": "id-18",
+      "name": "Within",
+      "type": "geometry"
+    }
+  ],
+  "allConnectors": [
+    {
+      "ap2Name": "number or geometry",
+      "ap1ID": "id-4",
+      "ap2ID": "id-2"
+    },
+    {
+      "ap2Name": "wires",
+      "ap1ID": "id-15",
+      "ap2ID": "id-4"
+    },
+    {
+      "ap2Name": "within",
+      "ap1ID": "id-18",
+      "ap2ID": "id-4"
+    }
+  ],
+  "unitsKey": "Unitless",
+  "fileTypeVersion": 1,
+  "filetypeVersion": 1
 }
